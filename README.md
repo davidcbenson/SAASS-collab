@@ -21,6 +21,9 @@ There is a better than average chance if you are here, you are here because you 
 These course "notes" are *only* intended for Dr. Benson's class unless otherwise indicated, and are only *supplemental* materials. Refer to your instructor for guidance on how he or she wishes to conduct class. All information is provided "as is" without guarantee or warranty. Many things will come up in class that will not get covered here. If you have any questions about information provided here your first stop should be your instructor.
 
   - [Daily "homework"](./Course-Notes/Class-XXVIII/Homework.md) to help situate the readings (not collected or graded)
+  - [Daneta's Chart on Goods Types](./images/GoodsTable.png)
+  - [Article on How Data Science's Negative Externalities for Women h/t Charlie G.](https://www.theverge.com/2019/3/5/18251570/caroline-criado-perez-invisible-women-data-bias-science-gender)
+
 
 # How to Use a Repo
 
