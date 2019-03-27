@@ -33,6 +33,7 @@ Repos are an important tool for collaboration and program development. Used prop
   * [Notetaking Software](Tools-for-notes.md)
   * [Citation Managers](Citation-Managers.md)
   * [Library Managers](Library-Managers.md)
+  - [SAASS LaTeX Templates](https://github.com/davidcbenson/SAASS-collab/tree/master/SAASS-LaTeX)
 
 # Latest Military Relevant Research
 

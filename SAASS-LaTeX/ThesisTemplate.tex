@@ -1,0 +1,360 @@
+%%%Basic setup
+\documentclass[11pt, letterpaper, titlepage]{report}
+
+%%%Random packages
+%BEGIN_FOLD
+\usepackage{lipsum}  %Let me generating fake text with \lipsum[1]
+\usepackage{amsmath, amsfonts, amssymb, graphicx}
+\usepackage{textcomp} %let me use math symbols in text
+\usepackage{comment} %let me block out major sections with \begin{comment}....\end{comment}
+\usepackage{todonotes}  %the \todo command does not like human quotes, so use `` and '' if needed.
+\raggedright  %left justify
+\usepackage[all]{nowidow} % ensure no "widow lines"
+%\usepackage{enumitem}  % prepare to use lists
+\usepackage{enumerate}
+\usepackage{color,soul} %allow me to highlight '\hl'
+\usepackage{epigraph}
+%END_FOLD
+	
+%%%Bibliography & Citation Management
+%BEGIN_FOLD
+	\usepackage	[
+	doi=false,isbn=false, %self explanatory
+	compresspages, %I forget what this does
+%	short, %Short style for all citations
+	noibid, %supress ibid
+	]  {biblatex-chicago}
+
+	%Set Bibliography name
+	\bibliography{Thesis Bibliography}  %name of bibliography here  
+	
+	%Tweak block quotes s.t. reverts to single spacing before & after in a double-space document
+	\usepackage{etoolbox}
+		\BeforeBeginEnvironment{quote}{\par\begin{singlespace*}}
+		\AfterEndEnvironment{quote}{\end{singlespace*}\par}
+%END_FOLD
+
+%%%Modifgy Table of Contents...thanks for nothing AU, it looked MUCH better before
+%BEGIN_FOLD
+\usepackage{tocloft,etoolbox}
+	\makeatletter
+		% \patchcmd{<cmd>}{<search>}{<replace>}{<success>}{<failure>}
+		\patchcmd{\l@chapter}{#1}{\MakeUppercase{#1}}{}{}% Chapters use UPPERCASE in ToC
+		\patchcmd{\l@section}{#1}{\MakeUppercase{#1}}{}{}% Sections use UPPERCASE in ToC
+		\patchcmd{\l@subsection}{#1}{\MakeUppercase{#1}}{}{}% Subsections use UPPERCASE in ToC
+	\makeatother
+	\renewcommand{\cftchapfont}{\normalfont}% Chapters not bold
+	\renewcommand\cftchapaftersnum{.}%adds dot after chapter number in ToC
+	\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}} %Add dots from chapter to page number
+	\renewcommand{\cftchappagefont}{\normalfont} %Clear font for chapters
+%	\renewcommand{\ctfchapleader}{1em}
+%	\setlength{\cftchapnumwidth}{3em}
+%	\setlength{\cftchapindent}{2em}  %how far to indent chapters from left margin
+
+	% \cftsetindents{<entry>}{<indent>}{<numwidth>}
+		\cftsetindents{chapter}{2em}{3em}
+%			\cftsetindents{section}{4em}{3em}
+%			\cftsetindents{subsection}{5em}{4.2em}
+%			\cftsetindents{subsubsection}{9.2em}{5em}
+
+	\setlength{\cftbeforetoctitleskip}{0pt}  %Move TOC to top of page
+	\setlength{\cftaftertoctitleskip}{0pt} %No extra spaces after TOC heading
+	\setcounter{tocdepth}{0}	
+%END_FOLD
+
+%%%Endnotes and Footnotes
+%BEGIN_FOLD
+	%Flip these for endnotes vs footnotes (remember to add "\theendnotes" just before \end{document})
+		%\usepackage{endnotes}
+		%\let\footnote=\endnote
+
+	%Keep URLs in footnotes and make them consistent size & font with surrounding text
+		\usepackage{url}
+		\urlstyle{same}
+		\usepackage{afterpage}
+		
+	%Set footnotes s.t. they will be raggedright, hanging and flush with the left margin	
+		\usepackage[flushmargin,ragged,hang]{footmisc}
+
+	%Tweak footnotes s.t. will not be superscript, yet still flush left, etc...
+		\usepackage{etoolbox}
+			\makeatletter%%
+				\patchcmd{\@makefntext}{%
+					\ifFN@hangfoot
+					\bgroup}%
+				{%
+					\ifFN@hangfoot
+					\bgroup\def\@makefnmark{\rlap{\normalfont\@thefnmark.}}}{}{}%
+				\patchcmd{\@makefntext}{%
+					\ifdim\footnotemargin>\z@
+					\hb@xt@ \footnotemargin{\hss\@makefnmark}}%
+				{%
+					\ifdim\footnotemargin>\z@
+					\hb@xt@ \footnotemargin{\@makefnmark\hss}}{}{}%
+			\makeatother
+		\setlength{\footnotemargin}{1.5em} % Space btw marker and text
+%END_FOLD
+
+%%%Font:  Using Times New Roman...must compile w/ XeLaTex if using "fontspec"
+%BEGIN_FOLD
+\usepackage{fontspec}
+%\setmainfont{Times New Roman}
+\setmainfont{Bookman Old Style}  %if using Bookman vs. Times, tune the font size down by one 
+%END_FOLD
+
+%%%Margins, Indents and Spacing
+%BEGIN_FOLD
+	\usepackage{indentfirst}
+%	\usepackage[margin=1in]{geometry}
+	\usepackage[left=1.5in, right=1in, top=1in, bottom=1in]{geometry}  %AU thesis:  left=1.5in, right/bottom/top=1in
+	\nonfrenchspacing  %Longer space after end of sentence (= natural break)
+	\usepackage{setspace}
+		\parindent=3em
+		\setstretch{1.6} %LaTeX doublespacing is 1.667.  if run "\doublespacing" command later, it will revert to 1.667 [i think]
+	\setlength{\parskip}{0em}  %no extra space between paragraphs
+	\addtolength{\skip\footins}{1em}  %add a reasonable space btw text and footnote\
+%END_FOLD
+
+%%%Header and Footer
+%BEGIN_FOLD
+	\usepackage{fancyhdr}
+	\usepackage{lastpage} %need this if want to use `x of y' pages below
+	\renewcommand{\headrulewidth}{0pt} %get rid of top line
+	\pagestyle{fancy}  %turn on fancy page styles
+	\fancyhf{} %clear header/footer already there
+	%Header
+%		\fancyhead[L]{C3 DRAFT Thesis} %header 
+	%Footer
+		\fancyfoot[C]{\thepage} %page numbers at bottom right of page
+		%\fancyfoot[R]{\thepage\ of \pageref{LastPage}}  %x of y pages, lower right
+		%\fancyfoot[L]{Lt Col Chris Corbett}
+%END_FOLD
+
+%%%Let me use human quotes
+%BEGIN_FOLD
+\usepackage [english]{babel}
+\usepackage [autostyle, english=american]{csquotes}
+\MakeOuterQuote{"}
+
+%In long qoutes like \begin{quote} or \blockquote, adjust right/left margins.  LaTeX defaults are .5 in, which is fine [better?]...but AU wants a little more distinction on the right
+\renewenvironment{quote}
+	{\small\list{}{\rightmargin=.6in \leftmargin=.5in}%
+		\item\relax}
+	{\endlist}
+%END_FOLD
+
+
+%%%Chapter and Section Headings
+%BEGIN_FOLD
+	%Font options: Huge, huge, LARGE, Large, large, normalsize, footnotesize, scriptsize, tiny
+	\usepackage[compact]{titlesec}
+		\titleformat{\chapter}[display]
+				{\normalfont\LARGE\bfseries\centering}
+				{\chaptertitlename\ \thechapter}{1pt}{\Large}
+	\titleformat*{\section}{\centering\Large\bfseries} %LARGE
+	\titleformat*{\subsection}{\centering\large\bfseries} %Large
+	\titleformat*{\subsubsection}{\flushleft\normalsize\bfseries\itshape} %large
+	
+	%\titlespacing{<command>}{<space from lft margin>}{<vspace before>}{<vspace after>}
+	\titlespacing*{\chapter}{0em}{0em}{2em}		
+	\titlespacing{\section}{0pt}{1em}{2em}{}   
+	\titlespacing{\subsection}{0em}{1em}{1em}{}
+	\titlespacing{\subsubsection}{3em}{0em}{0em}{}
+	\setcounter{secnumdepth}{0}
+	
+%END_FOLD
+
+%%% Add Watermark
+%BEGIN_FOLD
+%\usepackage[firstpage]{draftwatermark} % toggle "nostamp" to add/remove
+%	\SetWatermarkText{DRAFT}
+%	\SetWatermarkScale{.8}
+%	\SetWatermarkColor[gray]{0.9}
+%END_FOLD
+
+
+\begin{document}
+	
+%%Needed to add text on TOC...thanks for the one-off AU
+%BEGIN_FOLD
+	\addtocontents{toc}{%
+%		\protect\vspace{1em}% 
+		\protect\noindent Chapter\hfill page \protect\par
+		\protect\vspace{-1em}%
+	}
+	
+%END_FOLD
+	
+%% FRONT MATTER that no one really cares about
+%\begin{comment}  %FRONT MATTER
+
+%%APPROVAL SECTION
+%BEGIN_FOLD
+%		\thispagestyle{empty}
+%		\centering
+%		APPROVAL\\	
+%		\vspace{2em}
+%		\raggedright
+%		The undersigned certify that this thesis meets master's-level standards of research, arguments, and expression.\\
+%		\vspace{6em}
+%		\rule[0cm]{8cm}{0.03cm}\\
+%		DR. DAVID C. BENSON \hspace{19.5mm} (Date)\\
+%		\vspace{6em}
+%		\rule[0cm]{8cm}{0.03cm}\\
+%		DR. RICHARD R. MULLER \hspace{14mm} (Date)\\
+%		\newpage
+%		\newpage\null\thispagestyle{empty}
+%		\newpage
+%END_FOLD
+
+%	Title Page
+%BEGIN_FOLD
+	\begin{center}
+		\setstretch{2}
+		\thispagestyle{empty}
+		%\cleardoublepage  % uncheck to add blank page for printing 
+		%\vspace*{\fill}  %toggle to center text on middle of page (not AU guide, but looks better IMHO)
+		THOUGHTS INVADE US:  LEXICAL COGNITION AND CYBERSPACE\\
+		\vspace{3em}
+		BY\\
+		LIEUTENANT COLONEL CHRISTOPHER S. CORBETT\\
+		\vspace{3em}
+		A THESIS PRESENTED TO THE FACULTY OF\\
+		THE SCHOOL OF ADVANCED AIR AND SPACE STUDIES\\
+		FOR COMPLETION OF GRADUATION REQUIREMENTS\\
+		\vspace{3em}
+		SCHOOL OF ADVANCED AIR AND SPACE STUDIES\\
+		AIR UNIVERSITY\\
+		MAXWELL AIR FORCE BASE, ALABAMA\\
+		MAY 2017\\	
+		\vspace*{\fill}
+		\newpage\null\thispagestyle{empty}
+		\newpage
+	\end{center}	
+%END_FOLD
+
+% Set parrameters for remainder of front matter 
+\setlength{\parskip}{1em}  %Extra spaces between paragraphs
+\singlespacing %Remaining sections of front matter are single spaced
+\renewcommand{\thepage}{\roman{page}}% Roman numerals for page counter
+\setcounter{page}{1}  %reset page counter to one
+
+%	Disclaimer
+%BEGIN_FOLD
+	\centering
+	\addcontentsline{toc}{chapter}{Disclaimer}
+	DISCLAIMER\\
+	\vspace{2em}
+	\raggedright
+	The conclusions and opinions expressed in this document are those of the author.  They do not reflect the official position of the U.S. Government, Department of Defense, or the United States Air Force.
+	\newpage
+%END_FOLD
+
+%About Author
+%BEGIN_FOLD
+	\centering
+	\addcontentsline{toc}{chapter}{About the Author}
+	ABOUT THE AUTHOR\\
+	\vspace{2em}
+	\raggedright\parindent=3em
+	Lieutenant Colonel Corbett is a 2002 Graduate of Charleston Southern University, where he majored in Computer Science/Mathematics.  His 14-year career on active duty with the Air Force has taken him to a variety of assignments and places.  Prior to his assignment to SAASS, he was the Director of Operations for the 315th Network Warfare Squadron.
+
+	\newpage
+%END_FOLD
+
+%Acknowledgements
+%BEGIN_FOLD
+	\centering
+	\addcontentsline{toc}{chapter}{Acknowledgements}
+	ACKNOWLEDGMENTS\\
+	\raggedright\parindent=3em
+	\vspace{2em}
+	
+	\lipsum[1]  %generate fake text
+	
+	\newpage
+%END_FOLD
+
+%Abstract
+%BEGIN_FOLD
+	\addcontentsline{toc}{chapter}{Abstract}
+	\centering
+	ABSTRACT\\
+	\vspace{2em}
+	\raggedright\parindent=3em
+
+	\lipsum[1]  %gen more fake text
+
+	\newpage
+%END_FOLD
+
+%Table of Contents
+%BEGIN_FOLD
+	\renewcommand{\contentsname}{\hfill\normalfont\large CONTENTS \hfill}
+	\setstretch{1.7}  %Spacing...
+	\tableofcontents
+	\newpage
+%END_FOLD
+
+
+%% END FRONT MATTER
+
+%\end{comment}
+
+%%% Reset parameters for main text
+%BEGIN_FOLD
+\renewcommand{\thepage}{\arabic{page}}% Back to arabic numerals for page counter
+\setcounter{page}{1}  %reset page counter to one
+\setlength{\parskip}{0em}  %No extra spaces between paragraphs
+\setstretch{1.6} %1.6 is MS word equiv 1.5
+\raggedright %left justify
+\parindent=3em %set paragraph indent
+%END_FOLD
+
+\chapter{Introduction}
+\thispagestyle{empty} %no page number on first page per style guide
+\setcounter{footnote}{0}
+
+\lipsum[3]
+
+\newpage
+\chapter{Literature Review and Theory}
+\setcounter{footnote}{0}
+
+\lipsum[2]
+
+\section{Discourse, Frames, and Action} 
+\lipsum[1]
+
+	\section{From Words to Concepts}
+	\lipsum[1]
+
+		\subsection{Words in Action}
+		\lipsum[1]
+		
+		\subsection{Frames:  The Unwitting Intermediary}  
+		%%Goal:  I want to introduce frames, and start a discussion on how much language influences them or not.  I assume frames, I don't test them.  
+		% Independent variable IV (cause) <--> Mechanism (Frames!) <--> DV (effect)
+		
+ 		\lipsum[1]
+	
+
+
+\newpage
+\chapter{Conclusions}
+\setcounter{footnote}{0}
+
+\lipsum[1]
+
+\newpage
+
+\chapter*{Bibliography}
+\addcontentsline{toc}{chapter}{Bibliography}
+	\singlespacing
+	\nocite{*}
+	\setlength\bibitemsep{\baselineskip}
+%	\interlinepenalty=10000
+%	\raggedbottom
+	\printbibliography[heading=none]
+
+\end{document}
