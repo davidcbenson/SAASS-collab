@@ -15,6 +15,7 @@ The majority of what you will see in here are files related to research.
 There is a better than average chance if you are here, you are here because you want something from SAASS-667. The only document you can access from this page which is "official" for the class [is the syllabus](https://www.dropbox.com/s/osle6jezadi5sb7/Syllabus667.pdf?dl=0) and strictly speaking, the official version was distributed by email. Most supporting documents can be found [on the MSFRIC course support web page](http://fairchild-mil.libguides.com/c.php?g=144175&p=943396).
 
   - [Day 1 Presentation](https://davidcbenson.github.io/SAASS-667/)
+>>>>>>> dev
 
 ## Benson Course Notes
 
@@ -34,6 +35,7 @@ Repos are an important tool for collaboration and program development. Used prop
   * [Notetaking Software](Tools-for-notes.md)
   * [Citation Managers](Citation-Managers.md)
   * [Library Managers](Library-Managers.md)
+  - [SAASS LaTeX Templates](https://github.com/davidcbenson/SAASS-collab/tree/master/SAASS-LaTeX)
 
 # Latest Military Relevant Research
 
