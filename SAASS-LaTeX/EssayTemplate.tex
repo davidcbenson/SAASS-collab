@@ -1,0 +1,111 @@
+%%%Basic setup
+\documentclass[12pt, letterpaper, titlepage]{report}
+
+%%%Random packages
+%BEGIN_FOLD
+\usepackage{lipsum}  %Let me generating fake text with \lipsum[1]
+\usepackage{amsmath, amsfonts, amssymb, graphicx}
+\usepackage{textcomp} %let me use math symbols in text
+\usepackage{comment} %let me block out major sections with \begin{comment}....\end{comment}
+\usepackage{todonotes}  %the \todo command does not like human quotes, so use `` and '' if needed.
+\raggedright  %left justify
+\usepackage[all]{nowidow} % ensure no "widow lines"
+\usepackage{enumerate}
+\usepackage{color,soul} %allow me to highlight '\hl' to highlight
+\usepackage{epigraph}
+%END_FOLD
+	
+%%%Bibliography & Citation Management
+%BEGIN_FOLD
+	\usepackage	[
+	doi=false,isbn=false, %self explanatory
+	compresspages, %I forget what this does
+	short, %short style for all citations; comment out for full cites
+%	noibid, %supress ibid
+	]  {biblatex-chicago}
+
+	%Set Bibliography name
+	\bibliography{Essay Bibliography}  %<-- name of bibliography here...call it whatever
+	
+	%Tweak block quotes s.t. reverts to single spacing before & after in a double-space document
+	\usepackage{etoolbox}
+		\BeforeBeginEnvironment{quote}{\par\begin{singlespace*}}
+		\AfterEndEnvironment{quote}{\end{singlespace*}\par}
+%END_FOLD
+
+%%%Endnotes vs. Footnotes
+%BEGIN_FOLD
+	%Flip these for endnotes vs footnotes (remember the \theendnotes just before "\end{document}")
+		%\usepackage{endnotes}
+		%\let\footnote=\endnote
+
+	%Keep URLs in footnotes and make them consistent size & font with surrounding text
+		\usepackage{url}
+		\urlstyle{same}
+		\usepackage{afterpage}
+%END_FOLD
+
+%%%Font:  Using Times New Roman...must compile w/ XeLaTex if using "fontspec"
+%BEGIN_FOLD
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+%\setmainfont{Bookman Old Style}  %if using Bookman vs. Times, tune the font size down by one 
+%END_FOLD
+
+%%%Margins, Indents and Spacing
+%BEGIN_FOLD
+	\usepackage{indentfirst}
+%	\usepackage[margin=1in]{geometry}
+	\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}  %AU thesis:  left=1.5in, right/bottom/top=1in
+	\nonfrenchspacing  %Longer space after end of sentence (= natural break)
+	\usepackage{setspace}
+		\parindent=3em
+		\setstretch{1.9} %LaTeX doublespacing is 1.667.  if run "\doublespacing" command later, it will revert to 1.667 [i think].  Use 1.9 to approximate MS Word double space
+	\setlength{\parskip}{0em}  %no extra space between paragraphs
+	\addtolength{\skip\footins}{1em}  %add a reasonable space btw text and footnote\
+%END_FOLD
+
+%%%Header and Footer
+%BEGIN_FOLD
+	\usepackage{fancyhdr}
+	\usepackage{lastpage} %need this if want to use `x of y' pages below
+	\renewcommand{\headrulewidth}{0pt} %get rid of top line
+	\pagestyle{fancy}  %turn on fancy page styles
+	\fancyhf{} %clear header/footer already there
+	%Header
+%		\fancyhead[L]{C3 DRAFT Thesis} %header 
+	%Footer
+		\fancyfoot[R]{\thepage} %page numbers at bottom right of page
+		%\fancyfoot[R]{\thepage\ of \pageref{LastPage}}  %x of y pages, lower right
+		%\fancyfoot[L]{Lt Col Chris Corbett}
+%END_FOLD
+
+%%%Let me use human quotes...still need to use ` & ' for nested quotes
+%BEGIN_FOLD
+\usepackage [english]{babel}
+\usepackage [autostyle, english=american]{csquotes}
+\MakeOuterQuote{"}
+%END_FOLD
+
+%%%Chapter and Section Headings
+%BEGIN_FOLD
+	%options are:  Huge, huge, LARGE, Large, large, normalsize, footnotesize, scriptsize, tiny
+	\usepackage[compact]{titlesec}
+		%Uncomment these if using "Chapters"
+		%		\titleformat{\chapter}[display]
+		%		{\normalfont\huge\bfseries\centering}
+		%		{\chaptertitlename\ \thechapter}{1pt}{\LARGE}
+	\titleformat*{\section}{\large\bfseries}
+	\titleformat*{\subsection}{\bfseries\itshape}
+	\titleformat*{\subsubsection}{\itshape}
+	\titlespacing{\section}{0pt}{0pt}{0em}{}   % \titlespacing{<command>}{<space from lft margin>}{<vspace before>}{<vspace after>}
+	\titlespacing{\subsection}{0pt}{0em}{0em}{}
+	\titlespacing{\subsubsection}{0em}{0pt}{0pt}{}
+	\setcounter{secnumdepth}{0}
+%END_FOLD
+
+%%%Title Info
+\title{Your Title Here}
+\date{\today}
+\author{Your Name}
+
